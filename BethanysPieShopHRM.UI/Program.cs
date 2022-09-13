@@ -1,4 +1,5 @@
 using BethanysPieShopHRM.UI.Data;
+using BethanysPieShopHRM.UI.Interfaces;
 using BethanysPieShopHRM.UI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,13 +22,14 @@ builder.Services.AddScoped<HttpClient>(s =>
 });
 
 //services.AddScoped<IEmployeeDataService, MockEmployeeDataService>();
-builder.Services.AddScoped<IEmployeeDataService, EmployeeDataService>();
-builder.Services.AddScoped<ICountryDataService, CountryDataService>();
-builder.Services.AddScoped<IJobCategoryDataService, JobCategoryDataService>();
-builder.Services.AddScoped<IExpenseDataService, ExpenseDataService>();
-builder.Services.AddScoped<ITaskDataService, TaskDataService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<ISurveyDataService, SurveyDataService>();
+builder.Services.AddTransient<IEmployeeDataService, EmployeeDataService>();
+builder.Services.AddTransient<ICountryDataService, CountryDataService>();
+builder.Services.AddTransient<IJobCategoryDataService, JobCategoryDataService>();
+builder.Services.AddTransient<IExpenseDataService, ExpenseDataService>();
+builder.Services.AddTransient<ITaskDataService, TaskDataService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<ISurveyDataService, SurveyDataService>();
+builder.Services.AddTransient<IExpenseApprovalService, ManagerApprovalService>();
 
 var app = builder.Build();
 

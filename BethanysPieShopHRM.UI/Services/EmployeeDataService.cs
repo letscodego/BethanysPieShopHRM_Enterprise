@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BethanysPieShopHRM.Shared;
-using Microsoft.AspNetCore.Components;
 
 namespace BethanysPieShopHRM.UI.Services
 {
