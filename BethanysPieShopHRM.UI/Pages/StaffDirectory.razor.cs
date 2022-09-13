@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using BethanysPieShopHRM.UI.Components;
 using BethanysPieShopHRM.UI.Services;
 using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Components;
+using BethanysPieShopHRM.UI.Components;
 
 namespace BethanysPieShopHRM.UI.Pages
 {
-    public class StaffDirectoryBase: ComponentBase
+    public partial class StaffDirectory
     {
         [Inject]
         public IEmployeeDataService EmployeeDataService { get; set; }

@@ -2,14 +2,13 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BethanysPieShopHRM.UI.Components;
 using BethanysPieShopHRM.UI.Services;
 using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Components;
 
 namespace BethanysPieShopHRM.UI.Pages
 {
-    public class ExpenseEditBase : ComponentBase
+    public partial class ExpenseEdit
     {
         [Inject]
         public IExpenseDataService ExpenseService { get; set; }
