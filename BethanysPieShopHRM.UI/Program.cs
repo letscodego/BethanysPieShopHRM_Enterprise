@@ -21,6 +21,8 @@ builder.Services.AddScoped<HttpClient>(s =>
     return client;
 });
 
+//builder.WebHost.UseStaticWebAssets();
+
 //services.AddScoped<IEmployeeDataService, MockEmployeeDataService>();
 builder.Services.AddTransient<IEmployeeDataService, EmployeeDataService>();
 builder.Services.AddTransient<ICountryDataService, CountryDataService>();
