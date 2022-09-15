@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Net.Http;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 var apiBaseAddress = builder.Configuration["ApiBaseAddress"];
@@ -15,23 +15,33 @@ var apiBaseAddress = builder.Configuration["ApiBaseAddress"];
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 
-builder.Services.AddScoped<HttpClient>(s =>
+var pieShopURI = new Uri("https://localhost:44340/");
+var recruitingURI = new Uri("https://localhost:5001/");
+
+void RegisterTypedClient<TClient, TImplementation>(Uri apiBaseUrl)
+    where TClient : class where TImplementation : class, TClient
 {
-    var client = new HttpClient { BaseAddress = new System.Uri("https://localhost:44340/") };
-    return client;
-});
+    builder.Services.AddHttpClient<TClient, TImplementation>(client =>
+    {
+        client.BaseAddress = apiBaseUrl;
+    });
+}
 
-//builder.WebHost.UseStaticWebAssets();
+// HTTP services
+RegisterTypedClient<IEmployeeDataService, EmployeeDataService>(pieShopURI);
+RegisterTypedClient<ICountryDataService, CountryDataService>(pieShopURI);
+RegisterTypedClient<IJobCategoryDataService, JobCategoryDataService>(pieShopURI);
+RegisterTypedClient<ITaskDataService, TaskDataService>(pieShopURI);
+RegisterTypedClient<ISurveyDataService, SurveyDataService>(pieShopURI);
+RegisterTypedClient<ICurrencyDataService, CurrencyDataService>(pieShopURI);
+RegisterTypedClient<IExpenseDataService, ExpenseDataService>(pieShopURI);
+RegisterTypedClient<IJobDataService, JobsDataService>(recruitingURI);
 
-//services.AddScoped<IEmployeeDataService, MockEmployeeDataService>();
-builder.Services.AddTransient<IEmployeeDataService, EmployeeDataService>();
-builder.Services.AddTransient<ICountryDataService, CountryDataService>();
-builder.Services.AddTransient<IJobCategoryDataService, JobCategoryDataService>();
-builder.Services.AddTransient<IExpenseDataService, ExpenseDataService>();
-builder.Services.AddTransient<ITaskDataService, TaskDataService>();
+// Helper services
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<ISurveyDataService, SurveyDataService>();
 builder.Services.AddTransient<IExpenseApprovalService, ManagerApprovalService>();
+
 
 var app = builder.Build();
 
@@ -55,5 +65,6 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
 
 app.Run();
