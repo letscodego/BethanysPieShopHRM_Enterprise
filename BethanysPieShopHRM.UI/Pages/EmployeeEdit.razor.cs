@@ -6,6 +6,7 @@ using BethanysPieShopHRM.UI.Services;
 using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace BethanysPieShopHRM.UI.Pages
 {
@@ -13,6 +14,9 @@ namespace BethanysPieShopHRM.UI.Pages
     {
         [Inject]
         public IEmployeeDataService EmployeeDataService { get; set; }
+
+        [Inject]
+        public ProtectedLocalStorage  ProtectedLocalStorage { get; set; }
 
         [Inject]
         public ICountryDataService CountryDataService { get; set; }
@@ -50,7 +54,12 @@ namespace BethanysPieShopHRM.UI.Pages
 
             int.TryParse(EmployeeId, out var employeeId);
 
-            if (employeeId == 0) //new employee is being created
+            var savedEmployee = await ProtectedLocalStorage.GetAsync<Employee>("Employee");
+            if(savedEmployee.Value != null && employeeId == 0)
+            {
+                Employee = savedEmployee.Value;
+            }
+            else if (employeeId == 0) //new employee is being created
             {
                 //add some defaults
                 Employee = new Employee { CountryId = 1, JobCategoryId = 1, BirthDate = DateTime.Now, JoinedDate = DateTime.Now };
@@ -112,6 +121,12 @@ namespace BethanysPieShopHRM.UI.Pages
 
         protected void NavigateToOverview()
         {
+            NavigationManager.NavigateTo("/employeeoverview");
+        }
+
+        protected async Task TempSave()
+        {
+            await ProtectedLocalStorage.SetAsync("Employee", Employee);
             NavigationManager.NavigateTo("/employeeoverview");
         }
     }

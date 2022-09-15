@@ -141,6 +141,10 @@
                     Delete
                 </a>
             }
+
+           <a class="btn btn-outline-secondary edit-outline-btn 
+               float-right" @onclick="@TempSave">Temporary Save</a>
+
         </EditForm>
 
     }
@@ -148,6 +152,5 @@
     {
         <div class="alert @StatusClass">@Message</div>
         <a class="btn btn-outline-primary" @onclick="@NavigateToOverview">Back to overview</a>
-
     }
 </section>
