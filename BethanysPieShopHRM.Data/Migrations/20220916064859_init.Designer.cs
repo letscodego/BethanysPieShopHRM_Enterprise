@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BethanysPieShopHRM.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220913003944_init")]
+    [Migration("20220916064859_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,77 @@ namespace BethanysPieShopHRM.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("BethanysPieShopHRM.Shared.Address", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"), 1L, 1);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Zip")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Addresses");
+
+                    b.HasData(
+                        new
+                        {
+                            AddressId = 1,
+                            City = "Farmington",
+                            CountryId = 1,
+                            EmployeeId = 1,
+                            Latitude = 40.760800000000003,
+                            Longitude = -111.89100000000001,
+                            State = "Utah",
+                            Street = "182 W Union Ave",
+                            Zip = "84025"
+                        },
+                        new
+                        {
+                            AddressId = 2,
+                            City = "Farmington",
+                            CountryId = 2,
+                            EmployeeId = 2,
+                            Latitude = 40.760800000000003,
+                            Longitude = -111.89100000000001,
+                            State = "Utah",
+                            Street = "182 W Union Ave",
+                            Zip = "84025"
+                        });
+                });
 
             modelBuilder.Entity("BethanysPieShopHRM.Shared.Answer", b =>
                 {
@@ -46,6 +117,64 @@ namespace BethanysPieShopHRM.Data.Migrations
                     b.HasIndex("SurveyId");
 
                     b.ToTable("Answers");
+                });
+
+            modelBuilder.Entity("BethanysPieShopHRM.Shared.Contact", b =>
+                {
+                    b.Property<int>("ContactId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContactId"), 1L, 1);
+
+                    b.Property<string>("CompanyEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmergencyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmergencyPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PersonalEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ContactId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("Contacts");
+
+                    b.HasData(
+                        new
+                        {
+                            ContactId = 1,
+                            CompanyEmail = "bethany@bethanyspieshop.com",
+                            EmergencyName = "Bob",
+                            EmergencyPhoneNumber = "555-234-4567",
+                            EmployeeId = 1,
+                            PersonalEmail = "test@test.com",
+                            PhoneNumber = "555-123-1234"
+                        },
+                        new
+                        {
+                            ContactId = 2,
+                            CompanyEmail = "bob@bethanyspieshop.com",
+                            EmergencyName = "Tim",
+                            EmergencyPhoneNumber = "555-123-4567",
+                            EmployeeId = 2,
+                            PersonalEmail = "sample@test.com",
+                            PhoneNumber = "555-123-1234"
+                        });
                 });
 
             modelBuilder.Entity("BethanysPieShopHRM.Shared.Country", b =>
@@ -160,27 +289,16 @@ namespace BethanysPieShopHRM.Data.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Comment")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ExitDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
@@ -199,33 +317,15 @@ namespace BethanysPieShopHRM.Data.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MaritalStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("Smoker")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Zip")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("EmployeeId");
-
-                    b.HasIndex("CountryId");
 
                     b.HasIndex("JobCategoryId");
 
@@ -236,33 +336,22 @@ namespace BethanysPieShopHRM.Data.Migrations
                         {
                             EmployeeId = 1,
                             BirthDate = new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            City = "Brussels",
                             Comment = "Lorem Ipsum",
-                            CountryId = 1,
-                            Email = "bethany@bethanyspieshop.com",
                             FirstName = "Bethany",
                             Gender = 1,
-                            IsFTE = false,
+                            IsFTE = true,
                             IsOPEX = false,
                             JobCategoryId = 1,
                             JoinedDate = new DateTime(2015, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Smith",
-                            Latitude = 50.850299999999997,
-                            Longitude = 4.3517000000000001,
                             MaritalStatus = 1,
-                            PhoneNumber = "324777888773",
-                            Smoker = false,
-                            Street = "Grote Markt 1",
-                            Zip = "1000"
+                            Smoker = false
                         },
                         new
                         {
                             EmployeeId = 2,
                             BirthDate = new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            City = "New York",
                             Comment = "Lorem Ipsum",
-                            CountryId = 1,
-                            Email = "bob@bethanyspieshop.com",
                             FirstName = "Bob",
                             Gender = 1,
                             IsFTE = false,
@@ -270,13 +359,8 @@ namespace BethanysPieShopHRM.Data.Migrations
                             JobCategoryId = 1,
                             JoinedDate = new DateTime(2015, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastName = "Smith",
-                            Latitude = 46.850299999999997,
-                            Longitude = 48.351700000000001,
                             MaritalStatus = 1,
-                            PhoneNumber = "55512312321",
-                            Smoker = false,
-                            Street = "Apple Road",
-                            Zip = "59555"
+                            Smoker = false
                         });
                 });
 
@@ -333,7 +417,7 @@ namespace BethanysPieShopHRM.Data.Migrations
                             Amount = 900.0,
                             CoveredAmount = 0.0,
                             CurrencyId = 1,
-                            Date = new DateTime(2022, 9, 12, 17, 39, 44, 556, DateTimeKind.Local).AddTicks(9105),
+                            Date = new DateTime(2022, 9, 15, 23, 48, 59, 470, DateTimeKind.Local).AddTicks(1818),
                             Description = "I went to a conference",
                             EmployeeId = 1,
                             ExpenseType = 2,
@@ -485,6 +569,25 @@ namespace BethanysPieShopHRM.Data.Migrations
                     b.ToTable("Surveys");
                 });
 
+            modelBuilder.Entity("BethanysPieShopHRM.Shared.Address", b =>
+                {
+                    b.HasOne("BethanysPieShopHRM.Shared.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BethanysPieShopHRM.Shared.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("BethanysPieShopHRM.Shared.Answer", b =>
                 {
                     b.HasOne("BethanysPieShopHRM.Shared.Survey", "Survey")
@@ -496,21 +599,24 @@ namespace BethanysPieShopHRM.Data.Migrations
                     b.Navigation("Survey");
                 });
 
-            modelBuilder.Entity("BethanysPieShopHRM.Shared.Employee", b =>
+            modelBuilder.Entity("BethanysPieShopHRM.Shared.Contact", b =>
                 {
-                    b.HasOne("BethanysPieShopHRM.Shared.Country", "Country")
+                    b.HasOne("BethanysPieShopHRM.Shared.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("CountryId")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("BethanysPieShopHRM.Shared.Employee", b =>
+                {
                     b.HasOne("BethanysPieShopHRM.Shared.JobCategory", "JobCategory")
                         .WithMany()
                         .HasForeignKey("JobCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Country");
 
                     b.Navigation("JobCategory");
                 });

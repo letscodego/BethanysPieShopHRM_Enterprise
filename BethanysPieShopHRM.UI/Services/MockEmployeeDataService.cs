@@ -82,19 +82,25 @@ namespace BethanysPieShopHRM.UI.Services
             {
                 Employee e1 = new Employee
                 {
-                    CountryId = 1,
+                    Address = new Address()
+                    {
+                        CountryId = 1,
+                        City = "Brussels",
+                        Street = "Grote Markt 1",
+                        Zip = "1000",
+                    },
+                    Contact = new Contact()
+                    {
+                        PersonalEmail = "bethany@bethanyspieshop.com",
+                        PhoneNumber = "324777888773",
+                    },
                     MaritalStatus = MaritalStatus.Single,
                     BirthDate = new DateTime(1979, 1, 16),
-                    City = "Brussels",
-                    Email = "bethany@bethanyspieshop.com",
                     EmployeeId = 1,
                     FirstName = "Bethany",
                     LastName = "Smith",
                     Gender = Gender.Female,
-                    PhoneNumber = "324777888773",
                     Smoker = false,
-                    Street = "Grote Markt 1",
-                    Zip = "1000",
                     JobCategoryId = 1, 
                     Comment = "Lorem Ipsum",
                     ExitDate = null,

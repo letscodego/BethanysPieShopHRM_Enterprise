@@ -86,15 +86,9 @@ namespace BethanysPieShopHRM.Data.Migrations
                 {
                     EmployeeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Zip = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Smoker = table.Column<bool>(type: "bit", nullable: false),
                     IsOPEX = table.Column<bool>(type: "bit", nullable: false),
                     IsFTE = table.Column<bool>(type: "bit", nullable: false),
@@ -103,19 +97,11 @@ namespace BethanysPieShopHRM.Data.Migrations
                     Comment = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     JoinedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ExitDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    JobCategoryId = table.Column<int>(type: "int", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
+                    JobCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.EmployeeId);
-                    table.ForeignKey(
-                        name: "FK_Employees_Countries_CountryId",
-                        column: x => x.CountryId,
-                        principalTable: "Countries",
-                        principalColumn: "CountryId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employees_JobCategories_JobCategoryId",
                         column: x => x.JobCategoryId,
@@ -142,6 +128,62 @@ namespace BethanysPieShopHRM.Data.Migrations
                         column: x => x.SurveyId,
                         principalTable: "Surveys",
                         principalColumn: "SurveyId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    AddressId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Zip = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Countries_CountryId",
+                        column: x => x.CountryId,
+                        principalTable: "Countries",
+                        principalColumn: "CountryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contacts",
+                columns: table => new
+                {
+                    ContactId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PersonalEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CompanyEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmergencyPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmergencyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contacts", x => x.ContactId);
+                    table.ForeignKey(
+                        name: "FK_Contacts_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -232,18 +274,46 @@ namespace BethanysPieShopHRM.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "EmployeeId", "BirthDate", "City", "Comment", "CountryId", "Email", "ExitDate", "FirstName", "Gender", "IsFTE", "IsOPEX", "JobCategoryId", "JoinedDate", "LastName", "Latitude", "Longitude", "MaritalStatus", "PhoneNumber", "Smoker", "Street", "Zip" },
-                values: new object[] { 1, new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Brussels", "Lorem Ipsum", 1, "bethany@bethanyspieshop.com", null, "Bethany", 1, false, false, 1, new DateTime(2015, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", 50.850299999999997, 4.3517000000000001, 1, "324777888773", false, "Grote Markt 1", "1000" });
+                columns: new[] { "EmployeeId", "BirthDate", "Comment", "ExitDate", "FirstName", "Gender", "IsFTE", "IsOPEX", "JobCategoryId", "JoinedDate", "LastName", "MaritalStatus", "Smoker" },
+                values: new object[] { 1, new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lorem Ipsum", null, "Bethany", 1, true, false, 1, new DateTime(2015, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", 1, false });
 
             migrationBuilder.InsertData(
                 table: "Employees",
-                columns: new[] { "EmployeeId", "BirthDate", "City", "Comment", "CountryId", "Email", "ExitDate", "FirstName", "Gender", "IsFTE", "IsOPEX", "JobCategoryId", "JoinedDate", "LastName", "Latitude", "Longitude", "MaritalStatus", "PhoneNumber", "Smoker", "Street", "Zip" },
-                values: new object[] { 2, new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "New York", "Lorem Ipsum", 1, "bob@bethanyspieshop.com", null, "Bob", 1, false, false, 1, new DateTime(2015, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", 46.850299999999997, 48.351700000000001, 1, "55512312321", false, "Apple Road", "59555" });
+                columns: new[] { "EmployeeId", "BirthDate", "Comment", "ExitDate", "FirstName", "Gender", "IsFTE", "IsOPEX", "JobCategoryId", "JoinedDate", "LastName", "MaritalStatus", "Smoker" },
+                values: new object[] { 2, new DateTime(1979, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lorem Ipsum", null, "Bob", 1, false, false, 1, new DateTime(2015, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Smith", 1, false });
+
+            migrationBuilder.InsertData(
+                table: "Addresses",
+                columns: new[] { "AddressId", "City", "CountryId", "EmployeeId", "Latitude", "Longitude", "State", "Street", "Zip" },
+                values: new object[,]
+                {
+                    { 1, "Farmington", 1, 1, 40.760800000000003, -111.89100000000001, "Utah", "182 W Union Ave", "84025" },
+                    { 2, "Farmington", 2, 2, 40.760800000000003, -111.89100000000001, "Utah", "182 W Union Ave", "84025" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Contacts",
+                columns: new[] { "ContactId", "CompanyEmail", "EmergencyName", "EmergencyPhoneNumber", "EmployeeId", "PersonalEmail", "PhoneNumber" },
+                values: new object[,]
+                {
+                    { 1, "bethany@bethanyspieshop.com", "Bob", "555-234-4567", 1, "test@test.com", "555-123-1234" },
+                    { 2, "bob@bethanyspieshop.com", "Tim", "555-123-4567", 2, "sample@test.com", "555-123-1234" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Expenses",
                 columns: new[] { "ExpenseId", "Amount", "CoveredAmount", "CurrencyId", "Date", "Description", "EmployeeId", "ExpenseType", "Status", "Title" },
-                values: new object[] { 1, 900.0, 0.0, 1, new DateTime(2022, 9, 12, 17, 39, 44, 556, DateTimeKind.Local).AddTicks(9105), "I went to a conference", 1, 2, 0, "Conference Expense" });
+                values: new object[] { 1, 900.0, 0.0, 1, new DateTime(2022, 9, 15, 23, 48, 59, 470, DateTimeKind.Local).AddTicks(1818), "I went to a conference", 1, 2, 0, "Conference Expense" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_CountryId",
+                table: "Addresses",
+                column: "CountryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_EmployeeId",
+                table: "Addresses",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Answers_SurveyId",
@@ -251,9 +321,9 @@ namespace BethanysPieShopHRM.Data.Migrations
                 column: "SurveyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_CountryId",
-                table: "Employees",
-                column: "CountryId");
+                name: "IX_Contacts_EmployeeId",
+                table: "Contacts",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_JobCategoryId",
@@ -274,13 +344,22 @@ namespace BethanysPieShopHRM.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
                 name: "Answers");
+
+            migrationBuilder.DropTable(
+                name: "Contacts");
 
             migrationBuilder.DropTable(
                 name: "Expenses");
 
             migrationBuilder.DropTable(
                 name: "Tasks");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
 
             migrationBuilder.DropTable(
                 name: "Surveys");
@@ -290,9 +369,6 @@ namespace BethanysPieShopHRM.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employees");
-
-            migrationBuilder.DropTable(
-                name: "Countries");
 
             migrationBuilder.DropTable(
                 name: "JobCategories");
