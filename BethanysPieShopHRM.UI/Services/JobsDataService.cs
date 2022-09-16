@@ -8,7 +8,7 @@ namespace BethanysPieShopHRM.UI.Services
 {
     public class JobsDataService : IJobDataService
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         public JobsDataService(HttpClient client)
         {
@@ -51,6 +51,7 @@ namespace BethanysPieShopHRM.UI.Services
 
         public async Task DeleteJob(int jobId)
         {
+            await _client.DeleteAsync($"jobs/{jobId}");
         }
     }
 }

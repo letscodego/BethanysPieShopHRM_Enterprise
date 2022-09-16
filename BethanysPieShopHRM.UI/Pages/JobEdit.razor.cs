@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using BethanysPieShopHRM.UI.Components;
+﻿using System.Threading.Tasks;
 using BethanysPieShopHRM.UI.Services;
 using BethanysPieShopHRM.Shared;
 using Microsoft.AspNetCore.Components;
@@ -47,6 +43,12 @@ namespace BethanysPieShopHRM.UI.Pages
 
         protected void NavigateToOverview()
         {
+            NavigationManager.NavigateTo("/jobs");
+        }
+
+        protected  async Task DeleteJob()
+        {
+            await JobDataService.DeleteJob(Job.Id);
             NavigationManager.NavigateTo("/jobs");
         }
     }
