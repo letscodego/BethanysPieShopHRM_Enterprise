@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BethanysPieShopHRM.UI.Components
 {
-    public class NewEmployeesWidgetBase : ComponentBase
+    public partial class NewEmployeesWidget
     {
         public List<Employee> NewEmployees { get; set; } = new List<Employee>();
 

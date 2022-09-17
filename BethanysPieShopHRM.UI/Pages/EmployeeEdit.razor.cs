@@ -43,7 +43,6 @@ namespace BethanysPieShopHRM.UI.Pages
 
         //needed to bind to select to value
         protected string CountryId = string.Empty;
-        protected string JobCategoryId = string.Empty;
 
         //used to store state of screen
         protected string Message = string.Empty;
@@ -83,13 +82,11 @@ namespace BethanysPieShopHRM.UI.Pages
             }
 
             CountryId = Employee.Address?.CountryId.ToString();
-            JobCategoryId = Employee.JobCategoryId.ToString();
         }
 
         protected async Task HandleValidSubmit()
         {
             Employee.Address.CountryId = int.Parse(CountryId);
-            Employee.JobCategoryId = int.Parse(JobCategoryId);
 
             if (Employee.EmployeeId == 0) //new
             {

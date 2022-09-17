@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BethanysPieShopHRM.UI.Components
 {
-    public class AddEmployeeDialogBase : ComponentBase
+    public partial class AddEmployeeDialog
     {
         public bool ShowDialog { get; set; }
 
